@@ -1,60 +1,105 @@
-const caixaPrincipal = document.querySelector(".caixa-principal")
-const caixaPerguntas = document.querySelector(".caixa-perguntas")
-const caixaAlternativas = document.querySelector(".caixa-alternativas")
-const caixaResultado = document.querySelector(".caixa-resultado")
-const textoResultado = document.querySelector(".texto-resultado")
+const caixaPrincipal = document.querySelector(".caixa-principal");
+const caixaPerguntas = document.querySelector(".caixa-perguntas");
+const caixaAlternativas = document.querySelector(".caixa-alternativas");
+const caixaResultado = document.querySelector(".caixa-resultado");
+const textoResultado = document.querySelector(".texto-resultado");
 
 const perguntas = [
     {
-        enunciado: "O que significa a sigla MPB?",
+        enunciado: "Assim que saiu da escola você se depara com uma nova tecnologia, um chat que consegue responder todas as dúvidas que uma pessoa pode ter, ele também gera imagens e áudios hiper-realistas. Qual o primeiro pensamento?",
         alternativas: [
-        "Música Particular Bandeirante", 
-        "Música Popular Brasileira."
+            {
+                texto: "Isso é assustador!",
+                afirmacao: "afirmação"
+            },
+            {
+                texto: "Isso é maravilhoso!",
+                afirmacao: "afirmação"
+            }
         ]
     },
     {
-        enunciado: "Quando o MPB surgiu?",
+        enunciado: "Com a descoberta desta tecnologia, chamada Inteligência Artificial, uma professora de tecnologia da escola decidiu fazer uma sequência de aulas sobre esta tecnologia. No fim de uma aula ela pede que você escreva um trabalho sobre o uso de IA em sala de aula. Qual atitude você toma?",
         alternativas: [
-        "Surgiu durante a Ditadura Militar no Brasil, na década de 60, como uma nova opção de estilo musical, que procedeu à Bossa Nova.", 
-        "Surgiu durante o começo da Semana da Arte Moderna no Brasil, em 1922, como uma das formas de manifestações e busca de cultura própria contra o Eurocentrismo da época."
+            {
+                texto: "Utiliza uma ferramenta de busca na internet que utiliza IA para que ela ajude a encontrar informações relevantes para o trabalho e explique numa linguagem que facilite o entendimento.",
+                afirmacao: "afirmação"
+            },
+            {
+                texto: "Escreve o trabalho com base nas conversas que teve com colegas, algumas pesquisas na internet e conhecimentos próprios sobre o tema.",
+                afirmacao: "afirmação"
+            }
         ]
     },
     {
-        enunciado: "O que o MPB busca?",
+        enunciado: "Após a elaboração do trabalho escrito, a professora realizou um debate entre a turma para entender como foi realizada a pesquisa e escrita. Nessa conversa também foi levantado um ponto muito importante: como a IA impacta o trabalho do futuro. Nesse debate, como você se posiciona?",
         alternativas: [
-        "O MPB, busca refletir a reunião de ritmos e movimentos musicais já no presentes no país, apresentando um novo conceito de música nacional.", 
-        "O MPB busca resgatar os ritmos e canções esquecidas e escondidas dos povos originários brasileiros."
+            {
+                texto: "Defende a ideia de que a IA pode criar novas oportunidades de emprego e melhorar habilidades humanas.",
+                afirmacao: "afirmação"
+            },
+            {
+                texto: "Me preocupo com as pessoas que perderão seus empregos para máquinas e defendem a importância de proteger os trabalhadores.",
+                afirmacao: "afirmação"
+            }
         ]
-    },{
-        enunciado: "Qual o instrumento mais constante nas músicas do MPB?",
+    },
+    {
+        enunciado: "Ao final da discussão, você precisou criar uma imagem no computador que representasse o que pensa sobre IA. E agora?",
         alternativas: [
-        "O instrumento mais constante é o pandeiro.", 
-        "O instrumento mais constante é o violão."
+            {
+                texto: "Criar uma imagem utilizando uma plataforma de design como o Paint.",
+                afirmacao: "afirmação"
+            },
+            {
+                texto: "Criar uma imagem utilizando um gerador de imagem de IA.",
+                afirmacao: "afirmação"
+            }
         ]
-    },{
-        enunciado: "Quais foram as músicas mais marcantes do movimento?",
+    },
+    {
+        enunciado: "Você tem um trabalho em grupo de biologia para entregar na semana seguinte, o andamento do trabalho está um pouco atrasado e uma pessoa do seu grupo decidiu fazer com ajuda da IA. O problema é que o trabalho está totalmente igual ao do chat. O que você faz? ",
         alternativas: [
-        "Gilberto Gil - Aquele abraço; Raul Seixas - Metamorfose Ambulante; Caetano Veloso - Alegria, Alegria; Chico Buarque - Apesar de você; Maria Bethânia - Carcará.", 
-        "Gilberto Gil - Aquele beijo; Pitty - Teto de Vidro; Veloso Caetano - Alegria, Alegria; Péricles - Até que durou; Alcione - Carcará."
+            {
+                texto: "Escrever comandos para o chat é uma forma de contribuir com o trabalho, por isso não é um problema utilizar o texto inteiro.",
+                afirmacao: "afirmação"
+            },
+            {
+                texto: "O chat pode ser uma tecnologia muito avançada, mas é preciso manter a atenção pois toda máquina erra, por isso revisar o trabalho e contribuir com as perspectivas pessoais é essencial.",
+                afirmacao: "afirmação"
+            }
         ]
-    },       
+    },
 ];
 
 let atual = 0;
 let perguntaAtual;
+let historiaFinal = "";
 
 function mostraPergunta() {
+    if(atual>=perguntas.length){
+        mostraResultado();
+        return;
+    }
     perguntaAtual = perguntas[atual];
     caixaPerguntas.textContent = perguntaAtual.enunciado;
     mostraAlternativas();
 }
 
-function mostraAlternativas() {
-    for( const alternativa of perguntaAtual.alternativas){
-        const botaoAlternativa = document.createElement ("button");
-        botaoAlternativa.textContent = alternativa;
-        caixaAlternativas.appendChild(botaoAlternativa);
+function mostraAlternativas(){
+    for(const alternativa of perguntaAtual.alternativas) {
+        const botaoAlternativas = document.createElement("button");
+        botaoAlternativas.textContent = alternativa.texto;
+        botaoAlternativas.addEventListener("click", () => respostaSelecionada(alternativa));
+        caixaAlternativas.appendChild(botaoAlternativas);
     }
+}
+
+function respostaSelecionada(opcaoSelecionada){
+    const afirmacoes = opcaoSelecionada.afirmacoes;
+    historiaFinal = afirmacoes;
+    atual++;
+    mostraPergunta();
 }
 
 mostraPergunta();
